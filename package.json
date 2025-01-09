@@ -1,0 +1,12 @@
+{
+  "name": "csc-308-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npm --prefix packages/react-frontend run dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
