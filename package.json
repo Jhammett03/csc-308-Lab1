@@ -6,6 +6,9 @@
   "scripts": {
     "dev": "npm --prefix packages/react-frontend run dev"
   },
+  "workspaces": [
+    "packages/*"
+  ],
   "keywords": [],
   "author": "",
   "license": "ISC"
