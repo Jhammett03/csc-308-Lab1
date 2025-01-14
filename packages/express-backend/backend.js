@@ -50,6 +50,7 @@ const addUser = (user) => {
     return user;
 };
 
+
 app.get("/users", (req, res) => {
   const name = req.query.name;
   if (name != undefined) {
@@ -76,6 +77,19 @@ app.get("/users/:id", (req, res) => {
     addUser(userToAdd);
     res.send();
   });
+
+  app.delete("/users", (req, res) => {
+    const userid = req.body.id; // Extract id from the request body
+    const useridx = users.users_list.findIndex((user) => user.id === userid);
+    if (useridx !== -1) {
+      users.users_list.splice(useridx, 1); // Remove the user from the list
+      res.status(200).send({ message: `User with id ${userid} deleted.` });
+    } else {
+      res.status(404).send({ message: `User with id ${userid} not found.` });
+    }
+  });
+  
+
 
 app.listen(port, () => {
   console.log(
