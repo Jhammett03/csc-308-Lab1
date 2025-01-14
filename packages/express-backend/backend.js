@@ -42,6 +42,12 @@ const findUserByName = (name) => {
   );
 };
 
+const findUserByNameAndJob = (name, job) => {
+    return users["users_list"].filter(
+      (user) => user["name"] === name && user["job"] === job
+    );
+  };
+
 const findUserById = (id) =>
   users["users_list"].find((user) => user["id"] === id);
 
@@ -50,10 +56,25 @@ const addUser = (user) => {
     return user;
 };
 
+const deleteUser = (userid, useridx) => {
+    if (useridx !== -1) {
+        users.users_list.splice(useridx, 1); // Remove the user from the list
+        //tried adding some status codes, hopefully these are good codes for debugging
+        return {status: 200, message: `User with id ${userid} deleted.` };
+      } else {
+        return {status: 404, message: `User with id ${userid} not found.` };
+      }
+};
+
 
 app.get("/users", (req, res) => {
   const name = req.query.name;
-  if (name != undefined) {
+  const job = req.query.job;
+  if (name != undefined && job != undefined) {
+    const result = findUserByNameAndJob(name, job);
+    res.send(result);
+  }
+  else if (name != undefined) {
     let result = findUserByName(name);
     result = { users_list: result };
     res.send(result);
@@ -81,12 +102,8 @@ app.get("/users/:id", (req, res) => {
   app.delete("/users", (req, res) => {
     const userid = req.body.id; // Extract id from the request body
     const useridx = users.users_list.findIndex((user) => user.id === userid);
-    if (useridx !== -1) {
-      users.users_list.splice(useridx, 1); // Remove the user from the list
-      res.status(200).send({ message: `User with id ${userid} deleted.` });
-    } else {
-      res.status(404).send({ message: `User with id ${userid} not found.` });
-    }
+    deleteUser(userid, useridx);
+    res.send();
   });
   
 
