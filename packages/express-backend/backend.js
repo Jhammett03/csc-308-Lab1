@@ -69,6 +69,10 @@ const deleteUser = (userid, useridx) => {
       }
 };
 
+const generateRandomId = () => {
+    return Math.random().toString(36).substr(6);
+}
+
 
 app.get("/users", (req, res) => {
   const name = req.query.name;
@@ -96,12 +100,16 @@ app.get("/users/:id", (req, res) => {
   }
 });
   
-  app.post("/users", (req, res) => {
+app.post("/users", (req, res) => {
     const userToAdd = req.body;
-    addUser(userToAdd);
-    res.send();
+    const newUser = {
+      id: generateRandomId(),
+      name: userToAdd.name,
+      job: userToAdd.job,
+    };
+    addUser(newUser);
+    res.status(201).send(newUser);
   });
-
   app.delete("/users", (req, res) => {
     const userid = req.body.id; // Extract id from the request body
     const useridx = users.users_list.findIndex((user) => user.id === userid);
