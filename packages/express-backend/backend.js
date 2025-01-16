@@ -58,17 +58,7 @@ const addUser = (user) => {
     users["users_list"].push(user);
     return user;
 };
-
-const deleteUser = (userid, useridx) => {
-    if (useridx !== -1) {
-        users.users_list.splice(useridx, 1); // Remove the user from the list
-        //tried adding some status codes, hopefully these are good codes for debugging
-        return {status: 200, message: `User with id ${userid} deleted.` };
-      } else {
-        return {status: 404, message: `User with id ${userid} not found.` };
-      }
-};
-
+  
 const generateRandomId = () => {
     return Math.random().toString(36).substr(6);
 }
@@ -103,19 +93,29 @@ app.get("/users/:id", (req, res) => {
 app.post("/users", (req, res) => {
     const userToAdd = req.body;
     const newUser = {
-      id: generateRandomId(),
+      id: generateRandomId(), 
       name: userToAdd.name,
       job: userToAdd.job,
     };
     addUser(newUser);
     res.status(201).send(newUser);
   });
-  app.delete("/users", (req, res) => {
-    const userid = req.body.id; // Extract id from the request body
-    const useridx = users.users_list.findIndex((user) => user.id === userid);
-    deleteUser(userid, useridx);
-    res.send();
+  app.delete("/users/:id", (req, res) => {
+    console.log("DELETE request received for ID:", req.params.id);
+    const userid = req.params.id;
+    const userIndex = users.users_list.findIndex((user) => user.id === userid);
+  
+    if (userIndex !== -1) {
+      users.users_list.splice(userIndex, 1); // Remove the user
+      console.log(`User with ID ${userid} deleted.`);
+      res.status(204).send(); // Success, no content
+    } else {
+      console.log(`User with ID ${userid} not found.`);
+      res.status(404).send({ message: `User with id ${userid} not found.` });
+    }
   });
+  
+
   
 app.listen(port, () => {
   console.log(
