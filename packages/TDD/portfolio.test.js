@@ -60,4 +60,66 @@ test('Portfolio should subtract shares when a sale is made', () => {
     expect(portfolio.countTickers()).toBe(1);
   });
   
+  test('Portfolio should not include tickers with zero shares after sale', () => {
+    const portfolio = new Portfolio();
+    portfolio.makePurchase('GMR', 5); // Add Game Stop
+    portfolio.sell('GMR', 5); // Sell all shares of GMR
+    expect(portfolio.getStocks()).toEqual([]); // GMR should be removed
+  });
+  
+  test('Portfolio should not include tickers with zero shares after multiple updates', () => {
+    const portfolio = new Portfolio();
+    portfolio.makePurchase('GMR', 5); // Add Game Stop
+    portfolio.sell('GMR', 3); // Sell some shares of GMR
+    portfolio.sell('GMR', 2); // Sell remaining shares of GMR
+    expect(portfolio.getStocks()).toEqual([]); // GMR should be removed
+  });
+  
+  test('Portfolio should not include tickers with zero shares if tickers are added and removed repeatedly', () => {
+    const portfolio = new Portfolio();
+    portfolio.makePurchase('GMR', 5); // Add Game Stop
+    portfolio.sell('GMR', 5); // Remove GMR
+    portfolio.makePurchase('GMR', 10); // Add GMR back
+    portfolio.sell('GMR', 10); // Remove GMR again
+    expect(portfolio.getStocks()).toEqual([]); // GMR should be removed
+  });
+
+  test('Portfolio should return 0 shares for a non-existent symbol', () => {
+    const portfolio = new Portfolio();
+    expect(portfolio.getShares('GMR')).toBe(0); // GMR is not in the portfolio
+  });
+  
+  test('Portfolio should return the correct number of shares for an existing symbol', () => {
+    const portfolio = new Portfolio();
+    portfolio.makePurchase('GMR', 5); // Add 5 shares of GMR
+    expect(portfolio.getShares('GMR')).toBe(5);
+  });
+  
+  test('Portfolio should return updated shares after multiple purchases of the same symbol', () => {
+    const portfolio = new Portfolio();
+    portfolio.makePurchase('GMR', 5); // Add 5 shares of GMR
+    portfolio.makePurchase('GMR', 10); // Add 10 more shares of GMR
+    expect(portfolio.getShares('GMR')).toBe(15); // Total shares should be 15
+  });
+  
+  test('Portfolio should return 0 after selling all shares of a symbol', () => {
+    const portfolio = new Portfolio();
+    portfolio.makePurchase('GMR', 5); // Add 5 shares of GMR
+    portfolio.sell('GMR', 5); // Sell all shares of GMR
+    expect(portfolio.getShares('GMR')).toBe(0); // GMR is no longer in the portfolio
+  });
+
+  test('Portfolio should not allow selling more shares than owned', () => {
+    const portfolio = new Portfolio();
+    portfolio.makePurchase('GMR', 5); // Add 5 shares of GMR
+    expect(() => portfolio.sell('GMR', 10)).toThrow('Cannot sell: Not enough shares of GMR.');
+  });
+  
+  test('Portfolio should allow selling exact number of shares owned', () => {
+    const portfolio = new Portfolio();
+    portfolio.makePurchase('GMR', 5); // Add 5 shares of GMR
+    expect(() => portfolio.sell('GMR', 5)).not.toThrow(); // Selling all shares should be valid
+    expect(portfolio.getShares('GMR')).toBe(0); // GMR should no longer exist in the portfolio
+  });
+  
   

@@ -36,7 +36,13 @@ class Portfolio {
 
     countTickers() {
     return this.stocks.length;
-    }    
+    }
+    
+    getShares(tickr) {
+    const existingStock = this.stocks.find(stock => stock.tickr === tickr);
+    return existingStock ? existingStock.shares : 0;
+    }
+
 }
 
 module.exports = Portfolio;
