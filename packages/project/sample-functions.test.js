@@ -76,7 +76,8 @@ test('Testing containsNumbers no number --success', () => {
   expect(result).toBeFalsy();
 });
 
-// this test is where the code was broken originally because the 
+// this test is where the code was broken originally because the whitespace is considered 
+// a number
 test('Testing containsNumbers at end --success', () => {
   const result = myFunctions.containsNumbers("special-characters!@#$%^&*()   test");
   expect(result).toBeFalsy();
