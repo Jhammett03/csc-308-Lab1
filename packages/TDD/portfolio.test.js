@@ -121,5 +121,3 @@ test('Portfolio should subtract shares when a sale is made', () => {
     expect(() => portfolio.sell('GMR', 5)).not.toThrow(); // Selling all shares should be valid
     expect(portfolio.getShares('GMR')).toBe(0); // GMR should no longer exist in the portfolio
   });
-  
-  
