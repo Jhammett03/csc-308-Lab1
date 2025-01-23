@@ -12,7 +12,7 @@ class Portfolio {
     }
 
     makePurchase(tickr, shares) {
-        const existingStock = this.stocks.find(stock => stock.tickr === symbol);
+        const existingStock = this.stocks.find(stock => stock.tickr === tickr);
         if (existingStock) {
         existingStock.shares += shares; // Update share count for existing symbol
         } else {
@@ -33,7 +33,10 @@ class Portfolio {
           this.stocks = this.stocks.filter(stock => stock.tickr !== tickr);
         }
       }
-      
+
+    countTickers() {
+    return this.stocks.length;
+    }    
 }
 
 module.exports = Portfolio;

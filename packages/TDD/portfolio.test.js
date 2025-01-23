@@ -40,4 +40,24 @@ test('Portfolio should subtract shares when a sale is made', () => {
     const portfolio = new Portfolio();
     expect(() => portfolio.sell('GOOG', 5)).toThrow(Error);
   });
+
+  test('Portfolio should return 0 tickers when empty', () => {
+    const portfolio = new Portfolio();
+    expect(portfolio.countTickers()).toBe(0);
+  });
+  
+  test('Portfolio should return the correct count of unique tickers', () => {
+    const portfolio = new Portfolio();
+    portfolio.makePurchase('GMR', 5); // Add Game Stop
+    portfolio.makePurchase('RBLX', 10); // Add Roblox
+    expect(portfolio.countTickers()).toBe(2);
+  });
+  
+  test('Portfolio should not double count the same ticker', () => {
+    const portfolio = new Portfolio();
+    portfolio.makePurchase('GMR', 5);
+    portfolio.makePurchase('GMR', 10); // Add more shares of the same ticker
+    expect(portfolio.countTickers()).toBe(1);
+  });
+  
   
