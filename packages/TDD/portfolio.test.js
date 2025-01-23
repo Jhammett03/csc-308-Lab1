@@ -1,5 +1,20 @@
 const Portfolio = require('./portfolio');
 
+/* ------ Reflection ------
+I enjoyed using the TDD approach to building this program.
+For the most part, I was able to follow the TDD protocol,
+however I found that I was actually handling more cases than 
+expected in the current iteration of the protocol. For example,
+I anticipated errors that would have occurred from trying to sell
+all of a stock or more of a stock, which meant once I got to that 
+portion of the assignment, it was already implimented and tested.
+For this reason, in a general sense, I think TDD is great for developing
+a robust program, but I also think it shouldnt hinder the development process,
+because it is inneficient to build a function you know will fail later on, and 
+wait to refactor when you can just do it when you are developing, though TDD
+can help catch errors that would be harder to diagnose.
+*/
+
 test('Empty portfolio initialization', () => {
     const portfolio = new Portfolio();
     expect(portfolio.getStocks()).toEqual([]);
