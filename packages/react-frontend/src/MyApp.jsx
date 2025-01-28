@@ -9,7 +9,7 @@ const [characters, setCharacters] = useState([]);
   function removeOneCharacter(index) {
   const userToDelete = characters[index]; // Identify the user to delete
 
-  fetch(`http://localhost:8000/users/${userToDelete.id}`, {
+  fetch(`http://localhost:8000/users/${userToDelete._id}`, {
     method: "DELETE",
   })
     .then((res) => {
